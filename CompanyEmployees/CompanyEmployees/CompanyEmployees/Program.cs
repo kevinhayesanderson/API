@@ -1,4 +1,5 @@
 using CompanyEmployees.Extensions;
+using NLog;
 
 namespace CompanyEmployees
 {
@@ -8,11 +9,15 @@ namespace CompanyEmployees
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            LogManager.LoadConfiguration(Path.Combine(Directory.GetCurrentDirectory(),"nlog.config"));
+
             //to give or restrict access rights to applications from different domains
             builder.Services.ConfigureCors();
 
             //IIS integration which will help with deployment to IIS
             builder.Services.ConfigureIISIntegration();
+
+            builder.Services.ConfigureLoggerService();
 
             builder.Services.AddControllers();//registers only the controllers in IServiceCollection
 
